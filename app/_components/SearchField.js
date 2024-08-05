@@ -23,6 +23,8 @@ const StyledButton = {
   },
 }
 export default function SearchField() {
+  const [itemName, setItemName] = useState('');
+  const [department, setDepartment] = useState('');
   const [quantity, setQuantity] = useState(0);
 
   function handleQuantityChange(e) {
@@ -35,12 +37,13 @@ export default function SearchField() {
             <TextField id='searchItem' 
             label='e.g: Palets, Pen, Pencil,...' 
             required
-        
+            value={itemName}
             sx={{ flex: 3,'& .MuiOutlinedInput-root': { borderRadius: '20px', borderColor: 'black'} }}
             />
             <TextField id='department'
             label='Department' 
             defaultValue='General'
+            value={department}
             sx={{flex: 1, '& .MuiOutlinedInput-root': { borderRadius: '20px', borderColor: 'black'} }}
             required
             
