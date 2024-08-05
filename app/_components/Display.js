@@ -1,7 +1,13 @@
 "use client"
-import { Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell } from "@mui/material";
-import { useState } from "react";
-import { CiMenuKebab } from "react-icons/ci";
+import { Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import { MdModeEdit } from "react-icons/md";
+import { FaTrashAlt } from "react-icons/fa";
+import {collection, deleteDoc, onSnapshot, query, querySnapshot, doc } from 'firebase/firestore';
+import {db} from '../../firebase';
+import EmptyData from "./EmptyData";
+import Loading from "./Loading";
+import { toast } from "react-toastify";
 
 
 const columns = [
@@ -10,16 +16,6 @@ const columns = [
     {id: 'department', label: 'Department', minWidth: 80},
     {id: 'action', label: '', minWidth: 30},
 ];
-function createData(itemName, quantity, department) {
-    return {itemName, quantity, department };
-}
-const rows = [
-    createData('Apple', 10, 'Produce'),
-    createData('Palets', 20, 'Grocery'),
-    createData('Knife', 5, 'Meat'),
-    createData('Cup', 15, 'Kitchen'),
-    createData('Table', 12, 'Furniture'),
-]
 const StyledChartBox = {
   backgroundColor: 'white',
   border: '1px solid black',
@@ -28,20 +24,43 @@ const StyledChartBox = {
   gridColumn: '3 / span 2',
   width: '30%',
   height: '175px',
-
 };
 export default function Display() {
     const [page, setPage] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rows, setRows] = useState([]);
     function handleChangePage(e) {
         setRowsPerPage(+e.target.value);
         setPage(0);
     }
+    const handleDeletePage = async (id) => {
+      try {
+        await deleteDoc(doc(db, 'inventory', id));
+        toast.success('Document deleted successfully');
+      } catch (error) {
+        toast.error('Error deleting document');
+      }
+    };
+  // Read data from firebase
+  useEffect(() => {
+    const q = query(collection(db, 'inventory'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() });
+      });
+      setRows(data);
+      setIsLoading(false);
+    })
+    return () => unsubscribe();
+  }, [setRows, setIsLoading]);
+  const emptyData = rows.length === 0;
   return (
-    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: '250px', gap: '5px'}}>
-        <div style={StyledChartBox}>
+    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: '250px', gap: '5px'}}>
+        <Box sx={StyledChartBox}>
           Hello World
-        </div>
+        </Box>
 
 
     <Paper sx={{width: '70%', overflow: 'hidden', display: 'flex', border: '1px solid black'}}>
@@ -63,21 +82,30 @@ export default function Display() {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          {isLoading ? <Loading/>: 
+          emptyData ? <EmptyData/> : (
+            <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <TableRow key={row.itemName}>
+              <TableRow key={row.id}>
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.itemName}</TableCell>
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.quantity}</TableCell>
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.department}</TableCell>
                 <TableCell align="center" style={{borderBottom: '1px solid black'}}>
-                  {<CiMenuKebab size={20}/>}
+                  {<div style={{display: 'flex',alignItems: 'center', gap: '20px'}}>
+                    <MdModeEdit size={20} style={{cursor: 'pointer'}}
+                  onClick={() => console.log('clicked')}/>
+                  <FaTrashAlt size={20} 
+                  onClick={() => handleDeletePage(row.id)}
+                  style={{cursor: 'pointer'}}/>
+                  </div>
+                  }
                   </TableCell>
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody>)}
         </Table>
       </TableContainer>
     </Paper>
-    </div>
+    </Box>
   )
 }
