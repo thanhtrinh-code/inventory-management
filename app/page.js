@@ -1,13 +1,10 @@
-import { Box, Container, Divider, Typography } from "@mui/material";
-import Header from "./_sections/Header";
-import SearchField from "./_components/SearchField";
+import { Box, Container } from "@mui/material";
 import Body from "./_sections/Body";
-import Footer from "./_sections/Footer";
-import Inventory from "./_sections/Inventory";
+import Header from "./_sections/Header";
 
 const StyledBody = {
   bgcolor: 'white',
-  height: '40vh',
+  height: '90vh',
   mt: 3,
   display: 'flex',
   justifyContent: 'center',
@@ -15,20 +12,25 @@ const StyledBody = {
   flexDirection: 'column',
   textAlign: 'center',
 }
-
-export default function Home() {
+const StyledImage = {
+  height: '37vh',
+  width: '65vh',
+  objectFit: 'cover',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  transition: 'transform 0.3s ease-in-out',
+}
+// Home Screen
+export default function Page() {
   return (
     <>
-    <Header/>
-    <Container>
+     <Header type='login'/>
+      <Container>
         <Box sx={StyledBody}>
           <Body/>
-          <SearchField/>
+          <img src='headPage.jpg' alt='Head Page Image' style={StyledImage}/>
         </Box>
-    </Container>
-    <Inventory/>
-    <Divider sx={{my: '10px'}}/>
-    <Footer/>
+      </Container>
     </>
   );
 }

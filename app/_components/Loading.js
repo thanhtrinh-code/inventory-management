@@ -9,6 +9,7 @@ export default function Loading() {
         <TableCell colSpan={3} style={{fontSize: '20px', fontFamily: 'monospace'}}>
             Loading... Please wait.
         </TableCell>
+        <TableCell></TableCell>
       </TableRow>
     </TableBody>
   )

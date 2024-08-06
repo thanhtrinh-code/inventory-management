@@ -16,7 +16,7 @@ export default function Body() {
             Welcome to the Inventory Management System!
         </Typography>
         <Typography variant="h5" sx={{
-            pb: '2rem',
+            pb: '1rem',
             fontFamily: 'Optima'
             }}>
             Make it easy to find and track your inventory.

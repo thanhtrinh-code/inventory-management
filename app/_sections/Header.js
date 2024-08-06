@@ -1,5 +1,6 @@
-import { Box, Button, Typography } from '@mui/material'
-import { AiOutlineProfile } from "react-icons/ai";
+import { Box, Button, NativeSelect, Typography } from '@mui/material'
+import Link from 'next/link'
+
 
 const StyleHeader = {
     bgcolor: 'white',
@@ -34,23 +35,24 @@ const StylesSignIn = {
         color: 'white',
       },
 }
-export default function Header() {
+export default function Header({type}) {
   return (
     <Box sx={StyleHeader}>
         <Box>
+            <Link href='/' style={{textDecoration: 'none'}}>
         <Typography variant='h5' sx={{fontFamily: 'serif', color: 'black', pl: '4rem'}}>
         Inventory Management System
         </Typography>
+        </Link>
         </Box>
 
         <Box sx={StyleMenus}>
-            <Button variant='outlined' sx={StylesSignIn}>
+            {type === 'login' && <Button variant='outlined' sx={StylesSignIn}>
                 Sign In
-            </Button>
+            </Button>}
             <Button variant='contained' sx={StyleGetStarted}>
-                Get Started
+                {type ==='login' ? 'Get Started' : 'Log Out'}
             </Button>
-            <AiOutlineProfile size={40}/>
         </Box>
     </Box>
   )

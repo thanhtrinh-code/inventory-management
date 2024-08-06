@@ -9,6 +9,7 @@ export default function EmptyData() {
         <TableCell colSpan={3} style={{fontSize: '20px', fontFamily: 'monospace'}}>
             The inventory is empty. Please add items to display.
         </TableCell>
+        <TableCell></TableCell>
       </TableRow>
     </TableBody>
   )

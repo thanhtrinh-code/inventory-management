@@ -2,11 +2,15 @@ import { Typography, Box, Divider } from '@mui/material';
 import React from 'react';
 
 const styleFooter = {
-  bgcolor: '#f8f9fa', // Light background color
+  backgroundColor: 'white', // Light background color
   color: '#6c757d', // Subtle text color
-  p: '20px',
+  padding: '20px',
   textAlign: 'center',
-  my: '20px'
+  marginTop: '15px',
+  bottom: 0,
+  position: 'fixed',
+  width: '100%',
+  boxSizing: 'border-box',
 };
 
 const styleText = {
