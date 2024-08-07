@@ -1,5 +1,7 @@
+"use client"
 import { Box, Button, NativeSelect, Typography } from '@mui/material'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 
 const StyleHeader = {
@@ -36,6 +38,10 @@ const StylesSignIn = {
       },
 }
 export default function Header({type}) {
+    const router = useRouter();
+    function handleNext(){
+        router.push('/landing')
+    };
   return (
     <Box sx={StyleHeader}>
         <Box>
@@ -47,7 +53,7 @@ export default function Header({type}) {
         </Box>
 
         <Box sx={StyleMenus}>
-            {type === 'login' && <Button variant='outlined' sx={StylesSignIn}>
+            {type === 'login' && <Button variant='outlined' sx={StylesSignIn} onClick={handleNext}>
                 Sign In
             </Button>}
             <Button variant='contained' sx={StyleGetStarted}>

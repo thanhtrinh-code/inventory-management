@@ -1,8 +1,8 @@
 "use client"
-import { Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Box, TablePagination } from "@mui/material";
+import { Paper, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Box, TablePagination, Checkbox } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import {collection, deleteDoc, onSnapshot, query, querySnapshot, doc } from 'firebase/firestore';
+import {collection, deleteDoc, onSnapshot, query, doc } from 'firebase/firestore';
 import {db} from '../../firebase';
 import EmptyData from "./EmptyData";
 import Loading from "./Loading";
@@ -10,23 +10,17 @@ import { toast } from "react-toastify";
 import TableHeader from "../_table/TableHeader";
 import TableCard from "../_table/TableCard";
 import MyModal from "./MyModal";
+import RecipeGenerator from "../_RecipeGenerator/RecipeGenerator";
 
 
 const columns = [
+    {id: 'checkbox', label: '', minWidth: 5},
     {id: 'itemName', label: 'Item Name', minWidth: 80},
-    {id: 'quantity', label: 'Quantity', minWidth: 80},
+    {id: 'quantity', label: 'Quantity', minWidth: 50},
     {id: 'department', label: 'Department', minWidth: 80},
     {id: 'action', label: '', minWidth: 30},
 ];
-const StyledChartBox = {
-  backgroundColor: 'white',
-  border: '1px solid black',
-  borderRadius: '7px',
-  padding: '2.4rem 3.2rem',
-  gridColumn: '3 / span 2',
-  width: '30%',
-  height: '46vh',
-};
+
 const StyledColumnsAndGenerator = {
   display: 'flex', 
   alignItems: 'center', 
@@ -50,9 +44,14 @@ export default function Display() {
     const [rows, setRows] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [search, setSearch] = useState('');
+    const [selectedItems, setSelectedItems] = useState({});
+    const [displayRecipe, setDisplayRecipe] = useState(false);
     const handleCloseModal = () => setOpenModal(false);
     
-
+    function handleSelectedItems(e, itemName) {
+        setSelectedItems((prev) => ({...prev, [itemName]: e.target.checked }));
+    }
     function handleOpenModal (rowId){
       setSelectedRow(rowId);
       setOpenModal(true);
@@ -88,24 +87,26 @@ export default function Display() {
   const emptyData = rows.length === 0;
   return (
     <Box sx={StyledColumnsAndGenerator}>
-        <Box sx={StyledChartBox}>
-          Hello World
-        </Box>
+        <RecipeGenerator />
 
 
     <Paper sx={StyledTable}>
       <TableContainer sx={{maxHeight: '100%', border: '1px solid black', flex: '1 1 auto'}}>
         <Table stickyHeader aria-label = 'sticky table'> 
-        <TableHead>
-            <TableHeader columns={columns}/>
+          <TableHead>
+            <TableHeader columns={columns} search={search} setSearch={setSearch}/>
           </TableHead>
           {isLoading ? <Loading/>: 
           emptyData ? <EmptyData/> : (
             <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+            {rows.filter((item) => {
+              return item.itemName.toLowerCase() === '' ? item : item.itemName.toLowerCase().includes(search.toLowerCase());
+            })
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
               <TableCard key={row.id} 
               row={row}
-
+              handleSelectedItems={handleSelectedItems}
               handleOpenModal={handleOpenModal}
               handleDeletePage={handleDeletePage} />
             ))}

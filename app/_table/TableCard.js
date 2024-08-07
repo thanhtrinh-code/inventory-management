@@ -1,16 +1,21 @@
-import { TableCell, TableRow } from "@mui/material";
+import { Checkbox, TableCell, TableRow } from "@mui/material";
 import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 
 
-export default function TableCard({row, handleDeletePage, handleOpenModal}) {
+export default function TableCard({row, handleDeletePage, handleOpenModal, handleSelectedItems}) {
   return (
     <TableRow key={row.id}>
+                <TableCell padding="checkbox" style={{borderBottom: '1px solid black'}}>
+                  <Checkbox onChange={(e) => handleSelectedItems(e, row.itemName)}/>
+                </TableCell> 
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.itemName}</TableCell>
-                <TableCell style={{borderBottom: '1px solid black'}}>{row.quantity}</TableCell>
+                <TableCell style={{borderBottom: '1px solid black'}}>
+                  {row.quantity}
+                  </TableCell>
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.department}</TableCell>
                 <TableCell align="center" style={{borderBottom: '1px solid black'}}>
-                  {<div style={{display: 'flex',alignItems: 'center', gap: '20px'}}>
+                  {<div style={{display: 'flex',justifyContent:'flex-end', gap: '40px'}}>
                     <MdModeEdit size={20} 
                     style={{cursor: 'pointer'}}
                     onClick={() => handleOpenModal(row.id)}
