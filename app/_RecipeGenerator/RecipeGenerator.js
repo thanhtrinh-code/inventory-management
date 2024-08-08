@@ -20,7 +20,9 @@ export default function RecipeGenerator({displayRecipe, handleDisplayRecipe, pre
           </Button>
         </Box>
         <Divider sx={{bgcolor: 'black', mt: '5px', pt: '1px'}}/>
-        {displayRecipe && <GettingRecipe query={query}/>}
+        {prevSelectedItems.length === 0 && !displayRecipe && <p>Select items to generate recipe</p>}
+        {displayRecipe && prevSelectedItems.length === 0 && <p>You haven't selected any items</p>}
+        {displayRecipe && prevSelectedItems.length > 0 && <GettingRecipe query={query}/>}
     </Box>
   )
 }
