@@ -3,11 +3,13 @@ import { MdModeEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 
 
-export default function TableCard({row, handleDeletePage, handleOpenModal, handleSelectedItems}) {
+export default function TableCard({row, handleDeletePage, handleOpenModal, handleSelectedItems, selectedItems  }) {
   return (
     <TableRow key={row.id}>
                 <TableCell padding="checkbox" style={{borderBottom: '1px solid black'}}>
-                  <Checkbox onChange={(e) => handleSelectedItems(e, row.itemName)}/>
+                  <Checkbox onChange={(e) => handleSelectedItems(e, row.itemName)}
+                  checked={Object.keys(selectedItems).filter(key=> selectedItems[key]).includes(row.itemName)}
+                  />
                 </TableCell> 
                 <TableCell style={{borderBottom: '1px solid black'}}>{row.itemName}</TableCell>
                 <TableCell style={{borderBottom: '1px solid black'}}>

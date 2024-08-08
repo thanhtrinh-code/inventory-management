@@ -11,6 +11,7 @@ import TableHeader from "../_table/TableHeader";
 import TableCard from "../_table/TableCard";
 import MyModal from "./MyModal";
 import RecipeGenerator from "../_RecipeGenerator/RecipeGenerator";
+import MyTableBody from "../_table/MyTableBody";
 
 
 const columns = [
@@ -45,10 +46,12 @@ export default function Display() {
     const [openModal, setOpenModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [search, setSearch] = useState('');
-    const [selectedItems, setSelectedItems] = useState({});
     const [displayRecipe, setDisplayRecipe] = useState(false);
     const handleCloseModal = () => setOpenModal(false);
-    
+
+    const [selectedItems, setSelectedItems] = useState({});
+    const [prevSelectedItems, setPrevSelectedItems] = useState([]);
+
     function handleSelectedItems(e, itemName) {
         setSelectedItems((prev) => ({...prev, [itemName]: e.target.checked }));
     }
@@ -62,6 +65,15 @@ export default function Display() {
     function handleChangeRowsPerPage(event) {
         setRowsPerPage(+event.target.value);
         setPage(0);
+    }
+    function handleDisplayRecipe(){
+      const prevItems = Object.keys(selectedItems).filter(key => selectedItems[key]);
+      setPrevSelectedItems(prevItems);
+      if(!displayRecipe){
+        setDisplayRecipe(recipe => !recipe);
+      }else{
+        setDisplayRecipe(true);
+      }
     }
     const handleDeletePage = async (id) => {
       try {
@@ -87,7 +99,10 @@ export default function Display() {
   const emptyData = rows.length === 0;
   return (
     <Box sx={StyledColumnsAndGenerator}>
-        <RecipeGenerator />
+        <RecipeGenerator displayRecipe={displayRecipe} 
+        handleDisplayRecipe={handleDisplayRecipe}
+        prevSelectedItems={prevSelectedItems}
+        />
 
 
     <Paper sx={StyledTable}>
@@ -98,19 +113,14 @@ export default function Display() {
           </TableHead>
           {isLoading ? <Loading/>: 
           emptyData ? <EmptyData/> : (
-            <TableBody>
-            {rows.filter((item) => {
-              return item.itemName.toLowerCase() === '' ? item : item.itemName.toLowerCase().includes(search.toLowerCase());
-            })
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-              <TableCard key={row.id} 
-              row={row}
-              handleSelectedItems={handleSelectedItems}
-              handleOpenModal={handleOpenModal}
-              handleDeletePage={handleDeletePage} />
-            ))}
-          </TableBody>)}
+            <MyTableBody rows={rows} page={page}
+            rowsPerPage={rowsPerPage} search={search} 
+            handleSelectedItems={handleSelectedItems}
+            handleOpenModal={handleOpenModal}
+            handleDeletePage={handleDeletePage}
+            selectedItems={selectedItems}
+            />
+            )}
         </Table>
       </TableContainer>
       <TablePagination

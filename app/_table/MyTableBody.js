@@ -1,7 +1,7 @@
 import { TableBody } from "@mui/material";
 import TableCard from "./TableCard";
 
-export default function MyTableBody({rows}) {
+export default function MyTableBody({rows, page, rowsPerPage, search, handleSelectedItems, handleOpenModal, handleDeletePage, selectedItems }) {
     
   return (
     <TableBody>
@@ -14,7 +14,9 @@ export default function MyTableBody({rows}) {
               row={row}
               handleSelectedItems={handleSelectedItems}
               handleOpenModal={handleOpenModal}
-              handleDeletePage={handleDeletePage} />
+              handleDeletePage={handleDeletePage}
+              selectedItems={selectedItems}
+              />
             ))}
     </TableBody>
   )
