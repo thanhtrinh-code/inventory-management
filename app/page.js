@@ -1,6 +1,7 @@
 import { Box, Container } from "@mui/material";
 import Body from "./_sections/Body";
 import Header from "./_sections/Header";
+import Image from "next/image";
 
 const StyledBody = {
   bgcolor: 'white',
@@ -27,7 +28,7 @@ export default function Page() {
       <Container>
         <Box sx={StyledBody}>
           <Body/>
-          <img src='headPage.jpg' alt='Head Page Image' style={StyledImage}/>
+          <Image width={500} height={500} src='/headPage.jpg' alt='Head Page Image' style={StyledImage}/>
         </Box>
       </Container>
     </>

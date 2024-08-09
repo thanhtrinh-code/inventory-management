@@ -53,7 +53,7 @@ export default function MyModal({openModal, handleCloseModal, selectedRow}) {
       }
     }
     fetchData();
-  },[openModal, setIsLoading, setItemName, setDepartment, setQuantity]);
+  },[openModal, setIsLoading, setItemName, setDepartment, setQuantity, selectedRow]);
 
   return (
     <Modal open={openModal} 

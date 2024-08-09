@@ -9,10 +9,9 @@ export default function Body() {
             pb: '25px',
             fontFamily: 'Times New Roman',
             fontWeight: 'bold',
-            lineHeight: '1.1'
-            
+            lineHeight: '1.1',
             }}>
-            Don't know what is in your inventory? <br/>
+            Don &apos; t know what is in your inventory? <br/>
             Welcome to the Inventory Management System!
         </Typography>
         <Typography variant="h5" sx={{
