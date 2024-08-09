@@ -47,7 +47,7 @@ export default function SearchField() {
   return (
     <form style={StyledSearchField} onSubmit={handleAddItem}>
             <TextField id='searchItem' 
-            label='e.g: Palets, Pen, Pencil,...' 
+            label='e.g: Chicken, Salt, Pepper,...' 
             required
             value={item.itemName}
             onChange={(e) => setItemName({...item, itemName: e.target.value})}

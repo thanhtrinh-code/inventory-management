@@ -24,7 +24,6 @@ const StyledImage = {
 export default function Page() {
   return (
     <>
-     <Header type='login'/>
       <Container>
         <Box sx={StyledBody}>
           <Body/>

@@ -1,7 +1,7 @@
 "use client"
-import { Box, Button, NativeSelect, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 
 const StyleHeader = {
@@ -37,11 +37,16 @@ const StylesSignIn = {
         color: 'white',
       },
 }
-export default function Header({type}) {
+export default function Header() {
+    const pathname = usePathname();
     const router = useRouter();
     function handleNext(){
         router.push('/landing')
     };
+    function handleSignOut(){
+        localStorage.removeItem('token');
+        router.push('/')
+    }
   return (
     <Box sx={StyleHeader}>
         <Box>
@@ -53,12 +58,21 @@ export default function Header({type}) {
         </Box>
 
         <Box sx={StyleMenus}>
-            {type === 'login' && <Button variant='outlined' sx={StylesSignIn} onClick={handleNext}>
-                Sign In
-            </Button>}
-            <Button variant='contained' sx={StyleGetStarted}>
-                {type ==='login' ? 'Get Started' : 'Log Out'}
-            </Button>
+            {pathname === '/' && (
+            <>
+                <Button variant='outlined' sx={StylesSignIn} onClick={handleNext}>
+                    Sign In
+                </Button>
+                <Button variant='contained' sx={StyleGetStarted} onClick={handleNext}>
+                    Get Started
+                </Button>
+            </>
+            )}
+            {pathname === '/landing' && (
+                <Button variant='contained' sx={StyleGetStarted} onClick={handleSignOut}>
+                    Sign Out
+                </Button>
+            )}
         </Box>
     </Box>
   )

@@ -19,7 +19,6 @@ const StyledBody = {
 export default function page() {
   return (
     <>
-      <Header type='logout'/>
       <Container>
         <Box sx={StyledBody}>
           <SearchField/>
