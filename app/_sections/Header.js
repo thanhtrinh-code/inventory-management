@@ -2,7 +2,8 @@
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-
+import {GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import {auth, provider} from "@/firebase";
 
 const StyleHeader = {
     bgcolor: 'white',
@@ -41,20 +42,34 @@ export default function Header() {
     const pathname = usePathname();
     const router = useRouter();
     function handleNext(){
-        router.push('/landing')
+        signInWithPopup(auth, provider).then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            localStorage.setItem('token', token);
+            const user = result.user;
+            router.push('/landing');
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const email = error.customerData.email;
+            const credential = GoogleAuthProvider.credentialFromError(error);
+        })
     };
     function handleSignOut(){
-        localStorage.removeItem('token');
-        router.push('/')
+        signOut(auth).then(() => {
+            localStorage.removeItem('token');
+            router.push('/')
+        }).catch((error) => {
+            console.error('Sign Out Failed:', error);
+        });
     }
   return (
     <Box sx={StyleHeader}>
         <Box>
-            <Link href='/' style={{textDecoration: 'none'}}>
+
         <Typography variant='h5' sx={{fontFamily: 'serif', color: 'black', pl: '4rem'}}>
         Inventory Management System
         </Typography>
-        </Link>
         </Box>
 
         <Box sx={StyleMenus}>

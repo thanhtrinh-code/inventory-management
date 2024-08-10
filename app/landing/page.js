@@ -1,8 +1,9 @@
+"use client"
 import Inventory from "../_sections/Inventory";
 import SearchField from "../_components/SearchField";
-import Body from "../_sections/Body";
 import { Box, Container, Divider, Typography } from "@mui/material";
-import Header from "../_sections/Header";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 const StyledBody = {
@@ -16,15 +17,27 @@ const StyledBody = {
     textAlign: 'center',
   }
 
-export default function page() {
+export default function Page() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsAuthenticated(false);
+      router.push('/'); // Redirect to home page
+    }
+  }, [router]);
+  if (!isAuthenticated) {
+    return null; // Render nothing while redirecting
+  }
   return (
     <>
       <Container>
         <Box sx={StyledBody}>
           <SearchField/>
         </Box>
-    </Container>
-    <Inventory/>
+      </Container>
+      <Inventory/>
     </>
   )
 }
