@@ -4,6 +4,7 @@ import SearchField from "../_components/SearchField";
 import { Box, Container, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import ChatBot from "./ChatBot";
 
 
 const StyledBody = {
@@ -20,6 +21,7 @@ const StyledBody = {
 export default function Page() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [openChat, setOpenChat] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {

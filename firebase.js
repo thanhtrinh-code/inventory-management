@@ -23,5 +23,4 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
-auth.languageCode = 'en';
 export {db, auth, provider};

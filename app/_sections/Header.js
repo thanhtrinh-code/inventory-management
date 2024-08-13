@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import {auth, provider} from "@/firebase";
 
+
 const StyleHeader = {
     bgcolor: 'white',
     display: 'flex',
@@ -41,6 +42,7 @@ const StylesSignIn = {
 export default function Header() {
     const pathname = usePathname();
     const router = useRouter();
+    
     function handleNext(){
         signInWithPopup(auth, provider).then((result) => {
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -63,6 +65,10 @@ export default function Header() {
             console.error('Sign Out Failed:', error);
         });
     }
+    function handleOpenChat(){
+        setOpenChat(chat => !chat);
+    }
+
   return (
     <Box sx={StyleHeader}>
         <Box>
@@ -70,6 +76,7 @@ export default function Header() {
         <Typography variant='h5' sx={{fontFamily: 'serif', color: 'black', pl: '4rem'}}>
         Inventory Management System
         </Typography>
+
         </Box>
 
         <Box sx={StyleMenus}>
